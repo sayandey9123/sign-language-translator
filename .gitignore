@@ -1,0 +1,32 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Data — too large for GitHub
+data/dataset/
+data/processed/
+
+# Model weights — too large
+backend/models/sign_model.h5
+
+# Keep these model files
+!backend/models/label_encoder.pkl
+!backend/models/training_history.png
+!backend/models/confusion_matrix.png
+
+# Node
+frontend/node_modules/
+frontend/build/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
