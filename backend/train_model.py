@@ -114,6 +114,9 @@ history = model.fit(
     verbose=1
 )
 
+model.save("backend/models/sign_model.h5")
+print("✅ Final model saved properly!")
+
 # ── EVALUATE ──
 print("\nEvaluating on test set...")
 test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
