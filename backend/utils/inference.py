@@ -19,8 +19,8 @@ def download_model():
         print("⬇️ Downloading model from Google Drive...")
         os.makedirs(os.path.join(BASE_DIR, "models"), exist_ok=True)
 
-        url = "https://drive.google.com/file/d/1iNPdKQrBsMoDoMVF3JX5y6lEzP568DXE/view?usp=sharing"  # ← replace this
-        gdown.download(url, MODEL_PATH, quiet=False)
+        url = "https://drive.google.com/uc?id=1iNPdKQrBsMoDoMVF3JX5y6lEzP568DXE"
+        gdown.download(url, MODEL_PATH, quiet=False, fuzzy=True)
 
 # ── LOAD MODEL & ENCODER ──
 print("Loading model...")
