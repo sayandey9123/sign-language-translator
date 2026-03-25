@@ -5,15 +5,29 @@ import pickle
 import cv2
 import base64
 import os
+import gdown
 
 # ── BASE DIR ──
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# ── MODEL PATH ──
+MODEL_PATH = os.path.join(BASE_DIR, "models/sign_model.h5")
+
+# ── DOWNLOAD MODEL IF NOT EXISTS ──
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        print("⬇️ Downloading model from Google Drive...")
+        os.makedirs(os.path.join(BASE_DIR, "models"), exist_ok=True)
+
+        url = "https://drive.google.com/file/d/1iNPdKQrBsMoDoMVF3JX5y6lEzP568DXE/view?usp=sharing"  # ← replace this
+        gdown.download(url, MODEL_PATH, quiet=False)
+
 # ── LOAD MODEL & ENCODER ──
 print("Loading model...")
-model = tf.keras.models.load_model(
-    os.path.join(BASE_DIR, "models/sign_model.h5")
-)
+
+download_model()
+
+model = tf.keras.models.load_model(MODEL_PATH)
 
 with open(os.path.join(BASE_DIR, "models/label_encoder.pkl"), "rb") as f:
     encoder = pickle.load(f)
@@ -29,13 +43,11 @@ hands = mp_hands.Hands(
     min_tracking_confidence=0.5
 )
 
-
 def decode_frame(base64_frame):
     img_data = base64.b64decode(base64_frame.split(",")[1])
     np_arr = np.frombuffer(img_data, np.uint8)
     frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     return frame
-
 
 def extract_landmarks(frame):
     img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -49,14 +61,12 @@ def extract_landmarks(frame):
         return np.array(row), result.multi_hand_landmarks[0]
     return None, None
 
-
 def normalize_landmarks(landmarks):
     X = landmarks.reshape(1, -1)
     X_min = X.min(axis=1, keepdims=True)
     X_max = X.max(axis=1, keepdims=True)
     X_normalized = (X - X_min) / (X_max - X_min + 1e-8)
     return X_normalized
-
 
 def predict_sign(base64_frame):
     try:
