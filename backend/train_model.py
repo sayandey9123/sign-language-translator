@@ -96,7 +96,7 @@ callbacks = [
         verbose=1
     ),
     ModelCheckpoint(
-        "backend/models/sign_model.h5",
+        "backend/models/best_model.keras",
         monitor='val_accuracy',
         save_best_only=True,
         verbose=1

@@ -1,7 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import './App.css';
 
-const WS_URL = 'ws://127.0.0.1:8000/ws';
+const WS_URL = process.env.NODE_ENV === 'production'
+  ? 'wss://signlens-backend.onrender.com/ws'
+  : 'ws://127.0.0.1:8000/ws';
 
 
 
